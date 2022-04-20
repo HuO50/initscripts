@@ -55,11 +55,15 @@ make-translations:
 #       just a symlink to /usr/bin, thanks to UsrMove change. Instead, we just
 #       use virtual provides for /usr/sbin/<utility> in specfile (for backward
 #       compatibility).
-install: install-binaries install-translations install-etc install-usr install-network-scripts install-man install-post
+install: install-binaries install-translations install-etc install-usr install-network-scripts install-man install-post install-sysctl
 
 
 install-binaries:
 	$(MAKE) install -C src DESTDIR=$(DESTDIR) prefix=$(prefix) bindir=$(bindir) libdir=$(libdir)
+
+install-sysctl:
+	install -m 0755 -d $(DESTDIR)/usr/lib/sysctl.d
+	install -m 0644 00-tencentos.conf $(DESTDIR)/usr/lib/sysctl.d/00-tencentos.conf
 
 install-translations:
 	$(MAKE) install -C po  DESTDIR=$(DESTDIR) prefix=$(prefix) bindir=$(bindir) libdir=$(libdir) \
